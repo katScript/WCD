@@ -43,6 +43,15 @@
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
             <hr>
+            <form method="get" action="product">
+                <div class="form-group">
+                    <label for="scode">Search by code</label>
+                    <input type="text" class="form-control" id="scode" placeholder="Product code" name="scode">
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <hr>
             <table class="table">
                 <thead>
                 <tr>
@@ -51,17 +60,20 @@
                     <th scope="col">Name</th>
                     <th scope="col">Price</th>
                     <th scope="col">Description</th>
+                    <th scope="col">Create Time</th>
                 </tr>
                 </thead>
                 <tbody>
                 <c:forEach var="p" items="${products}" varStatus="loop">
                     <c:set var="i" value="${loop.index}"/>
+                    <c:set var="pr" value="${p.value}"/>
                 <tr>
                     <th scope="row">${i + 1}</th>
-                    <td>${p.getCode()}</td>
-                    <td>${p.getName()}</td>
-                    <td>${p.getPrice()}</td>
-                    <td>${p.getDescription()}</td>
+                    <td>${pr.getCode()}</td>
+                    <td>${pr.getName()}</td>
+                    <td>${pr.getPrice()}</td>
+                    <td>${pr.getDescription()}</td>
+                    <td>${pr.getDateTime()}</td>
                 </tr>
                 </c:forEach>
                 </tbody>
