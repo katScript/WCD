@@ -8,15 +8,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
-
-@WebServlet(name = "layout", value = "/layout")
+@WebServlet(name = "layout", urlPatterns = {"/layout", "/layout/test"})
 public class ProductController extends AbstractController {
+    public ProductController() {
+        this.setDirection("/layout", "/product/listing.jsp")
+            .setDirection("/layout/test", "/product/test.jsp");
+    }
+
     @Override
     public void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        this.setTitle("Product");
-        this.setMainContent("/product/listing.jsp");
-        this.setData("products", new Product("IO1234", "test", 12.3, "sdfs"));
+        this.setTitle("Product")
+            .setData("products", new Product("IO1234", "test", 12.3, "sdfs"));
 
         super.processRequest(request, response);
     }
