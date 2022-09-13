@@ -4,6 +4,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 public interface AbstractControllerInterface {
@@ -19,7 +20,7 @@ public interface AbstractControllerInterface {
     String FOOTER = "page_footer";
     String STATIC_CONTENT = "page_static";
     String TITLE = "page_title";
-    void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+    void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException;
     String getMainContent();
     HashMap<String,String> getMapContent();
     AbstractControllerInterface setTitle(String title);
