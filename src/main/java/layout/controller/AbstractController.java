@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class AbstractController extends HttpServlet implements AbstractControllerInterface {
+public abstract class AbstractController extends HttpServlet implements AbstractControllerInterface {
     protected String layout;
     protected HashMap<String, String> directional = new HashMap<>();
     protected HashMap<String, Object> data = new HashMap<>();
