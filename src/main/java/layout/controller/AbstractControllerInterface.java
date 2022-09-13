@@ -20,7 +20,7 @@ public interface AbstractControllerInterface {
     String FOOTER = "page_footer";
     String STATIC_CONTENT = "page_static";
     String TITLE = "page_title";
-    void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException;
+    void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
     String getMainContent();
     HashMap<String,String> getMapContent();
     AbstractControllerInterface setTitle(String title);
