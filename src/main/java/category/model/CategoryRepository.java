@@ -1,11 +1,7 @@
-package database.category;
+package category.model;
 
 
 import database.connection.AbstractRepository;
-import database.queryBuilder.builder.UpdateQuery;
-
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 public class CategoryRepository extends AbstractRepository<Category> {
 
