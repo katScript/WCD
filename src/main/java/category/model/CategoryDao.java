@@ -1,4 +1,4 @@
-package database.category;
+package category.model;
 
 import database.dao.DaoInterface;
 
