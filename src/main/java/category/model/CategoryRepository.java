@@ -14,7 +14,7 @@ public class CategoryRepository extends AbstractRepository<Category> {
     @Override
     protected AbstractRepository prepareData(Category obj) {
         if (obj.getId() != null) {
-            this._fields.put(this._primaryKey, String.valueOf(obj.getId()));
+            this._fields.put(this._primaryKey, obj.getId());
         } else {
             this._fields.remove(this._primaryKey);
         }

@@ -10,6 +10,7 @@ public class IndexController extends AbstractController {
     public IndexController() {
         super();
 
+        this.userValidate.setLoginRequire(false);
         this.viewControllerRegistry
                 .setViewController("/views/homepage/index.jsp");
 

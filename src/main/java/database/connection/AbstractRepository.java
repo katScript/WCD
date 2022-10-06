@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public abstract class AbstractRepository<T> {
-    protected HashMap<String, String> _fields;
+    protected HashMap<String, Object> _fields;
     protected String _tableName;
     protected String _primaryKey;
     private QueryBuilder queryBuilder;
@@ -56,7 +56,9 @@ public abstract class AbstractRepository<T> {
         query.setCondition(this._primaryKey, "=", id);
 
         try {
-            PreparedStatement ps = this.getConnection().prepareStatement(query.getQuery());
+            PreparedStatement ps = query.prepareStatement(
+                this.getConnection().prepareStatement(query.getQuery())
+            );
             ps.setMaxRows(1);
 
             return ps.executeQuery();
@@ -69,12 +71,14 @@ public abstract class AbstractRepository<T> {
         this.prepareData(obj);
 
         try {
-            String query = this.queryBuilder
-                    .getInsertQueryBuilder()
-                    .setInsertValue(this._fields)
-                    .getQuery();
+            InsertQuery query = this.queryBuilder.getInsertQueryBuilder();
+            query.setInsertValue(this._fields);
 
-            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            PreparedStatement ps = query.prepareStatement(
+                this.getConnection()
+                    .prepareStatement(query.getQuery())
+            );
+
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -90,7 +94,11 @@ public abstract class AbstractRepository<T> {
                 query.setInsertValue(this._fields);
             }
 
-            PreparedStatement ps = this.getConnection().prepareStatement(query.getQuery());
+            PreparedStatement ps = query.prepareStatement(
+                this.getConnection()
+                    .prepareStatement(query.getQuery())
+            );
+
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -103,7 +111,10 @@ public abstract class AbstractRepository<T> {
 
             query.setCondition(this._primaryKey, "=", id);
 
-            PreparedStatement ps = this.getConnection().prepareStatement(query.getQuery());
+            PreparedStatement ps = query.prepareStatement(
+                this.getConnection()
+                    .prepareStatement(query.getQuery())
+            );
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -114,13 +125,16 @@ public abstract class AbstractRepository<T> {
         this.prepareData(obj);
 
         try {
-            UpdateQuery query = this.queryBuilder
-                    .getUpdateQueryBuilder()
-                    .setUpdateValue(this._fields);
+            UpdateQuery query = this.queryBuilder.getUpdateQueryBuilder();
 
+            query.setUpdateValue(this._fields);
             query.setCondition(this._primaryKey, "=", this._fields.get(this._primaryKey));
 
-            PreparedStatement ps = this.getConnection().prepareStatement(query.getQuery());
+            PreparedStatement ps = query.prepareStatement(
+                    this.getConnection()
+                        .prepareStatement(query.getQuery())
+            );
+
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

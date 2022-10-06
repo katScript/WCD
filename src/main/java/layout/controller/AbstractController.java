@@ -2,6 +2,7 @@ package layout.controller;
 
 import layout.registry.page.PageContentRegistry;
 import layout.registry.views.ViewControllerRegistry;
+import session.user.UserValidate;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,16 +18,24 @@ public abstract class AbstractController extends HttpServlet {
 
     protected PageContentRegistry pageContentRegistry;
 
+    protected UserValidate userValidate;
+
     public AbstractController() {
         this.viewControllerRegistry = new ViewControllerRegistry();
         this.pageContentRegistry = new PageContentRegistry();
+        this.userValidate = new UserValidate();
     }
 
     public void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (!this.userValidate.validate(request)) {
+            response.sendRedirect("/user/login");
+            return;
+        }
+
         this.initViews(request).
-            initContent(request).
-            initPageData(request).
-            dispatchRequest(request, response);
+                initContent(request).
+                initPageData(request).
+                dispatchRequest(request, response);
     }
 
     @Override
@@ -71,7 +80,6 @@ public abstract class AbstractController extends HttpServlet {
 
         return this;
     }
-
     public void dispatchRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher(this.pageContentRegistry.getLayout());
         dispatcher.forward(request, response);

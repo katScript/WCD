@@ -16,16 +16,21 @@ public class DeleteQuery extends AbstractBuilder {
 
     @Override
     public DeleteQuery init() {
-        this.deleteQuery = "DELETE FROM " + this._tableName + " ";
+        this._dataField.clear();
+        this.deleteQuery = "DELETE FROM ? ";
+        this._dataField.add(this._tableName);
+
         return this;
     }
 
     @Override
     public String getQuery() {
+        this._dataField.addAll(this.deleteCondition.getDataField());
+
         return this.deleteQuery + this.deleteCondition.getCondition() + ";";
     }
 
-    public ConditionBuilder setCondition(String col, String con, String val) {
+    public ConditionBuilder setCondition(String col, String con, Object val) {
         return this.deleteCondition.init(col, con, val);
     }
 }

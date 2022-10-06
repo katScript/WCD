@@ -2,8 +2,12 @@ package category.controller;
 
 import layout.controller.AbstractController;
 
-public class New extends AbstractController {
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
 
+@WebServlet(name="category", urlPatterns = {"/category/new"})
+@MultipartConfig
+public class New extends AbstractController {
     public New() {
         super();
 

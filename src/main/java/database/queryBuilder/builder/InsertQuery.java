@@ -3,8 +3,6 @@ package database.queryBuilder.builder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
-import java.util.function.Supplier;
 
 public class InsertQuery extends AbstractBuilder {
     private String insertQuery;
@@ -17,7 +15,10 @@ public class InsertQuery extends AbstractBuilder {
 
     @Override
     public InsertQuery init() {
-        this.insertQuery = "INSERT INTO " + this._tableName;
+        this._dataField.clear();
+        this.insertQuery = "INSERT INTO ? ";
+
+        this._dataField.add(this._tableName);
 
         return this;
     }
@@ -27,16 +28,27 @@ public class InsertQuery extends AbstractBuilder {
         return this.insertQuery + String.join(",", this.insertValue) + ";";
     }
 
-    public InsertQuery setInsertValue(HashMap<String, String> fields) {
-        this.insertQuery += " (" + String.join(", ", fields.keySet()) + ") VALUES ";
+    public InsertQuery setInsertValue(HashMap<String, Object> fields) {
+        this.insertQuery += " (" + this.setField(fields) + ") VALUES ";
         List<String> data = new ArrayList<>();
 
         for (String key : fields.keySet()) {
-            String value = String.valueOf(fields.get(key));
-            data.add("'" + value + "'");
+            data.add("?");
+            this._dataField.add(fields.get(key));
         }
 
-        this.insertValue.add("(" + String.join(",", data) + ")");
+        this.insertValue.add("(" + String.join(", ", data) + ")");
         return this;
+    }
+
+    private String setField(HashMap<String, Object> fields) {
+        List<String> fieldName = new ArrayList<>();
+
+        for (String key : fields.keySet()) {
+            fieldName.add("?");
+            this._dataField.add(key);
+        }
+
+        return String.join(", ", fieldName);
     }
 }
